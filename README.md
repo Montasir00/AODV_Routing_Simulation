@@ -6,7 +6,7 @@
 
 ---
 
-## 🔍 What is AODV?
+## What is AODV?
 
 AODV is a reactive routing protocol designed for **mobile ad-hoc networks (MANETs)**. Unlike proactive protocols that maintain routing tables at all times, AODV only discovers routes *on demand* — when a source node needs to communicate with a destination.
 
