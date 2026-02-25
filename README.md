@@ -14,14 +14,14 @@ The protocol operates in two phases:
 
 | Phase | Message | Description |
 |-------|---------|-------------|
-| 🔵 Route Discovery | `RREQ` | Source broadcasts a **Route Request**, flooding the network via BFS until the target is found |
-| 🩷 Route Reply | `RREP` | Target unicasts a **Route Reply** back along the reverse path to the source |
+| Route Discovery | `RREQ` | Source broadcasts a **Route Request**, flooding the network via BFS until the target is found |
+| Route Reply | `RREP` | Target unicasts a **Route Reply** back along the reverse path to the source |
 
 Once the route is established, data can flow from source → target along the discovered path.
 
 ---
 
-## 🎬 Animation Phases
+## Animation Phases
 
 The simulation visualizes all three stages in sequence:
 
@@ -32,7 +32,7 @@ The simulation visualizes all three stages in sequence:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -52,7 +52,7 @@ The animation will render inline as an interactive HTML widget. To save as a GIF
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 All key parameters are set at the top of the notebook and easy to tweak:
 
@@ -68,20 +68,20 @@ The target node is automatically selected to be **at least 4 hops** from the sou
 
 ---
 
-## 🎨 Color Legend
+## Color Legend
 
 | Color | Meaning |
 |-------|---------|
-| 🔵 Sky blue | Source node |
-| 🟡 Yellow | Target node |
-| 🩵 Cyan | RREQ flood edges & active node |
-| 🩷 Pink | RREP reply path |
-| 🟡 Amber | Final established route |
-| 🔵 Dark blue | Visited (explored) nodes |
+| Sky blue | Source node |
+| Yellow | Target node |
+| Cyan | RREQ flood edges & active node |
+| Pink | RREP reply path |
+| Amber | Final established route |
+| Dark blue | Visited (explored) nodes |
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 .
@@ -101,7 +101,7 @@ The target node is automatically selected to be **at least 4 hops** from the sou
 
 ---
 
-## 📚 References
+## References
 
 - [RFC 3561 — AODV Specification](https://www.rfc-editor.org/rfc/rfc3561)
 - [NetworkX Documentation](https://networkx.org/documentation/stable/)
