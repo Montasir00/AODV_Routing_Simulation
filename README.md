@@ -1,49 +1,108 @@
-# AODV (Ad-hoc On-Demand Distance Vector) Routing Simulation
+# 📡 AODV Routing Protocol Simulation
 
-A simulation using **NetworkX** in Python to illustrate the AODV routing algorithm in action.
+![AODV Simulation](aodv_simulation.gif)
 
-### **About AODV**
-
-AODV (Ad-hoc On-Demand Distance Vector) is an on-demand routing protocol for mobile ad-hoc networks. It operates dynamically, creating routes only when needed and is based on the **distance vector algorithm**. When a node wants to send data to another but lacks a route, it initiates a route discovery process by broadcasting a Route Request (RREQ) packet. Nodes forward this request until it reaches the destination or a node with a known route. Once established, routes are maintained, and in case of failures, Route Error (RERR) messages update routing tables. AODV's efficiency lies in its adaptability to dynamic network topologies, minimizing continuous updates and conserving bandwidth.
+> An animated, step-by-step visualization of the **Ad-hoc On-Demand Distance Vector (AODV)** routing protocol using Python, NetworkX, and Matplotlib.
 
 ---
 
-### **1. Overview**
+## 🔍 What is AODV?
 
-The simulation project illustrates the Ad-hoc On-Demand Distance Vector (AODV) routing algorithm using **Python**, **NetworkX**, **Matplotlib**, and **Tabulate**. This endeavor aims to provide a practical understanding of AODV's route discovery process in dynamic ad-hoc networks.
+AODV is a reactive routing protocol designed for **mobile ad-hoc networks (MANETs)**. Unlike proactive protocols that maintain routing tables at all times, AODV only discovers routes *on demand* — when a source node needs to communicate with a destination.
 
----
+The protocol operates in two phases:
 
-### **2. AODV Algorithm**
+| Phase | Message | Description |
+|-------|---------|-------------|
+| 🔵 Route Discovery | `RREQ` | Source broadcasts a **Route Request**, flooding the network via BFS until the target is found |
+| 🩷 Route Reply | `RREP` | Target unicasts a **Route Reply** back along the reverse path to the source |
 
-The core of the simulation lies in the **`aodv`** function, which initiates the AODV route discovery process by utilizing the **`route_discovery_aodv`** function. This function employs a breadth-first search mechanism, simulating the broadcast of Route Request (RREQ) packets and ultimately establishing a path from the source to the destination.
-
----
-
-### **3. Network Topology**
-
-To mimic a realistic ad-hoc network, a connected **Watts-Strogatz** graph was generated using the `create_connected_graph` function. Random edges were added in the **`simulate_network_topology`** function to capture the dynamic nature of such networks.
+Once the route is established, data can flow from source → target along the discovered path.
 
 ---
 
-### **4. Visualization**
+## 🎬 Animation Phases
 
-Network visualization was achieved through the **`visualize_network`** function, which showcased the network graph with nodes and labels. The AODV route was highlighted in red, offering a clear representation of the route discovery process.
+The simulation visualizes all three stages in sequence:
 
----
-
-### **5. Routing Tables**
-
-Routing tables are a crucial aspect of AODV. In the simulation, routing tables are initialized and updated dynamically. The **`initialize_routing_tables`** function creates empty routing tables for each node, while the **`update_routing_table`** function modifies these tables during the route discovery process. The **`print_routing_tables`** function provides a detailed view of the routing tables.
-
----
-
-### **6. Simulation**
-
-The **`simulate_network_topology`** function creates a network graph with a specified number of nodes and introduces randomness by adding edges. The main function orchestrates the entire simulation, from network creation to AODV routing, routing table updates, and visualization.
+1. **INITIALIZING** — Source and target nodes are identified on the graph
+2. **RREQ Flood** *(cyan)* — BFS expands outward from the source, lighting up each visited node and edge as the route request propagates
+3. **RREP Traceback** *(pink)* — Once the target is found, the reply traces back hop-by-hop to the source
+4. **COMPLETE** *(gold)* — The final discovered route is highlighted, with the full path displayed
 
 ---
 
-### **7. Results**
+## 🚀 Getting Started
 
-The program effectively demonstrates the AODV route discovery process in action. It showcases the path from the source to the destination, emphasizing the network topology along with the discovered route.
+### Prerequisites
+
+```bash
+pip install networkx matplotlib numpy
+```
+
+### Run the Simulation
+
+Open `aodv_improved.ipynb` in Jupyter and run all cells:
+
+```bash
+jupyter notebook aodv_improved.ipynb
+```
+
+The animation will render inline as an interactive HTML widget. To save as a GIF, run the final cell — this produces `aodv_simulation.gif` in the working directory.
+
+---
+
+## ⚙️ Configuration
+
+All key parameters are set at the top of the notebook and easy to tweak:
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `n` | `60` | Number of nodes in the network |
+| `p` | `0.12` | Edge probability (higher = denser graph) |
+| `seed` | `42` | Random seed for reproducibility |
+| `interval` | `75` | Frame delay in milliseconds |
+| `fps` | `12` | GIF output frame rate |
+
+The target node is automatically selected to be **at least 4 hops** from the source, ensuring a meaningful flood animation.
+
+---
+
+## 🎨 Color Legend
+
+| Color | Meaning |
+|-------|---------|
+| 🔵 Sky blue | Source node |
+| 🟡 Yellow | Target node |
+| 🩵 Cyan | RREQ flood edges & active node |
+| 🩷 Pink | RREP reply path |
+| 🟡 Amber | Final established route |
+| 🔵 Dark blue | Visited (explored) nodes |
+
+---
+
+## 🗂️ Project Structure
+
+```
+.
+├── aodv_improved.ipynb     # Main simulation notebook
+├── aodv_simulation.gif     # Exported animation
+└── README.md               # This file
+```
+
+---
+
+## 🛠️ Implementation Notes
+
+- **Graph generation** uses `nx.fast_gnp_random_graph` with automatic connectivity repair — isolated components are bridged so the graph is always fully connected.
+- **Route discovery** is implemented as a proper BFS with depth tracking, matching AODV's hop-count semantics.
+- **Animation** uses `FuncAnimation` with `blit=True` for performance. All dynamic edge layers use `LineCollection.set_segments()` for in-place updates — `arrows=False` is explicitly set to prevent matplotlib from returning `FancyArrowPatch` objects, which are incompatible with this update pattern.
+- **Edge weights** (1–5) are assigned randomly and available for extension (e.g., weighted shortest path).
+
+---
+
+## 📚 References
+
+- [RFC 3561 — AODV Specification](https://www.rfc-editor.org/rfc/rfc3561)
+- [NetworkX Documentation](https://networkx.org/documentation/stable/)
+- [Matplotlib FuncAnimation](https://matplotlib.org/stable/api/animation_api.html)
